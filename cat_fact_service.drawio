@@ -1,0 +1,75 @@
+<mxfile host="app.diagrams.net" modified="2023-07-08T14:54:34.761Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0) Gecko/20100101 Firefox/102.0" etag="NomIygOgD_ZkT2WUfFHq" version="21.6.1" type="github">
+  <diagram name="Page-1" id="uimHcgS7IIlwANmqrzHA">
+    <mxGraphModel dx="493" dy="822" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="KjFlVDDRTB2GXflKd77f-1" value="" style="image;points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image=img/lib/allied_telesis/computer_and_terminals/Personal_Computer_with_Server.svg;" vertex="1" parent="1">
+          <mxGeometry x="340" y="60" width="62.400000000000006" height="62.400000000000006" as="geometry" />
+        </mxCell>
+        <mxCell id="KjFlVDDRTB2GXflKd77f-2" value="&lt;div&gt;Client&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="351.75" y="122.4" width="50" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="KjFlVDDRTB2GXflKd77f-3" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="376.25" y="170" as="sourcePoint" />
+            <mxPoint x="376.25" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KjFlVDDRTB2GXflKd77f-4" value="NGINX" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="316.75" y="270" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="KjFlVDDRTB2GXflKd77f-5" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="316.75" y="340" as="sourcePoint" />
+            <mxPoint x="286.75" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KjFlVDDRTB2GXflKd77f-7" value="Cat Fact Service" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="210" y="400" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="KjFlVDDRTB2GXflKd77f-10" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="269.5" y="488" as="sourcePoint" />
+            <mxPoint x="269.5" y="538" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KjFlVDDRTB2GXflKd77f-11" value="Postgres" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="240" y="550" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="KjFlVDDRTB2GXflKd77f-12" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="340" y="429.5" as="sourcePoint" />
+            <mxPoint x="390" y="429.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KjFlVDDRTB2GXflKd77f-15" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.queue;fillColor=#D9A741;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="402.4" y="406" width="73.5" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="KjFlVDDRTB2GXflKd77f-16" value="RabbitMQ" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="399.15" y="460" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="KjFlVDDRTB2GXflKd77f-17" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="490" y="430" as="sourcePoint" />
+            <mxPoint x="540" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KjFlVDDRTB2GXflKd77f-18" value="Email Service" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="400" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="KjFlVDDRTB2GXflKd77f-21" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="620" y="380" as="sourcePoint" />
+            <mxPoint x="440" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KjFlVDDRTB2GXflKd77f-22" value="" style="shape=message;html=1;outlineConnect=0;" vertex="1" parent="KjFlVDDRTB2GXflKd77f-21">
+          <mxGeometry width="20" height="14" relative="1" as="geometry">
+            <mxPoint x="-10" y="-7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
