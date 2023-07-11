@@ -10,6 +10,17 @@ import (
 
 func (app *application) handleStoreCatFact(w http.ResponseWriter, r *http.Request) {
 
+    var input struct {
+        Fact string `json:"fact"`
+    }
+
+    err := app.readJSON(w, r, &input)
+    if err != nil {
+        return err
+    }
+
+    
+
 }
 
 func (app *application) handleGetCatFact() ([]*data.CatFact, error) {
@@ -24,7 +35,8 @@ func (app *application) handleGetCatFact() ([]*data.CatFact, error) {
 		return nil, err
 	}
 
-	fmt.Printf("%+v", cf)
+	//fmt.Printf("%T %s\n", cf)
+    fmt.Println(cf)
 
 	return cf, nil
 
