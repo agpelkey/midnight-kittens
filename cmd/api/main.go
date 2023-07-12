@@ -4,10 +4,13 @@ import (
 	"context"
 	"database/sql"
 	"flag"
+	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/agpelkey/midnight-kittens/internal/data"
+	_ "github.com/lib/pq"
 )
 
 // declare config
@@ -36,6 +39,8 @@ func main() {
 	flag.IntVar(&cfg.port, "port", 8080, "API Server port")
 	flag.StringVar(&cfg.env, "env", "development", "Environment (development|staging|production)")
 
+    flag.StringVar(&cfg.db.dsn, "db-dsn", os.Getenv("CAT_FACT_DB_DSN"), "PostgreSQL DB DSN")
+
 	// Pass in values to optimize our database
 	flag.IntVar(&cfg.db.maxOpenConns, "db-max-open-conns", 25, "PostgreSQL max open connections")
 	flag.IntVar(&cfg.db.maxIdleConns, "db-max-idle-conns", 25, "PostgreSQL max idle connections")
@@ -56,6 +61,8 @@ func main() {
 		config: cfg,
         Models: data.NewModels(conn), 
 	}
+
+    fmt.Println(app.handleGetCatFact())
 
 	err = app.serve()
 	if err != nil {

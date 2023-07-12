@@ -4,7 +4,8 @@ import "database/sql"
 
 type CatFact struct {
 	Id              int    `json:"id"`
-	Fact            string `json:"text"`
+	Fact            []byte `json:"text"`
+    Length          int    `json:"length"`
 	//User            string `json:"user"`
 	//UpdatedAt       string `json:"updatedAt"`
 	//SendDate        string `json:"sendDate"`
