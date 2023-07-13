@@ -11,6 +11,7 @@ import (
 
 	"github.com/agpelkey/midnight-kittens/internal/data"
 	_ "github.com/lib/pq"
+	"github.com/rabbitmq/amqp091-go"
 )
 
 // declare config
@@ -62,7 +63,13 @@ func main() {
         Models: data.NewModels(conn), 
 	}
 
-    fmt.Println(app.handleGetCatFact())
+    //fmt.Println(app.handleGetCatFact())
+    payload, err := app.handleGetCatFact()
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    createRabbitPublisher(payload)
 
 	err = app.serve()
 	if err != nil {
@@ -104,3 +111,58 @@ func openDB(cfg config) (*sql.DB, error) {
 
     return db, nil
 }
+
+func failOnError(err error, msg string) {
+    if err != nil {
+        log.Panicf("%s: %s", msg, err)
+    }
+}
+
+func createRabbitPublisher(fact *data.CatFact) {
+    
+    conn, err := amqp091.Dial("amqp://guest:guest@localhost:5672/")
+    failOnError(err, "Failed to connect to RabbitMQ")
+    defer conn.Close()
+
+    ch, err := conn.Channel()
+    failOnError(err, "failed to open a channel")
+    defer ch.Close()
+
+    q, err := ch.QueueDeclare(
+        "cat_fact",
+        false,
+        false,
+        false,
+        false,
+        nil,
+    )
+    failOnError(err, "failed to declare a queue")
+    
+    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+    defer cancel()
+
+    body := fact.Fact
+
+    err = ch.PublishWithContext(ctx,
+        "", // exchange
+        q.Name, // routing key
+        false, // mandatory
+        false, // immediate
+        amqp091.Publishing{
+            ContentType: "text/plain",
+            Body: []byte(body),
+        })
+
+    failOnError(err, "failed to publish a message")
+    log.Printf(" [x] Sent %s\n", body)
+
+}
+
+
+
+
+
+
+
+
+

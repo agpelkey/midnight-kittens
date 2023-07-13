@@ -1,7 +1,8 @@
 package main
 
 import (
-	"io"
+	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/agpelkey/midnight-kittens/internal/data"
@@ -10,88 +11,73 @@ import (
 /*
 func (app *application) handleStoreCatFact(w http.ResponseWriter, r *http.Request) {
 
-    var input struct {
-        Fact string `json:"fact"`
-    }
-
-    err := app.readJSON(w, r, &input)
+    payload, err := app.handleGetCatFact()
     if err != nil {
-    fmt.Println()
         return
     }
 
-    fact := &data.CatFact{
-        Fact: input.Fact,
+    fact := strings.NewReader(payload.Fact)
+
+
+    req, err := http.NewRequest("POST", "https://localhost/api/getFacts", fact)
+    if err != nil {
+        return
     }
 
-    err = app.Models.Facts.SendFactToDB(fact)
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    if err != nil {
+        return
+    }
+
+    defer resp.Body.Close()
+
+    err = app.Models.Facts.SendFactToDB(payload)
 
     headers := make(http.Header)
-    headers.Set("Location", fmt.Sprintf("api/facts/%d", fact.Id))
+    headers.Set("Location", fmt.Sprintf("api/getFacts/%d", payload.Id))
 
     err = app.writeJSON(w, http.StatusCreated, envelope{"fact": fact}, headers)
     if err != nil {
         app.serverErrorResponse(w, r, err)
     }
-
 }
 */
 
-func (app *application) handleGetCatFact() error {
+func (app *application) handleGetCatFact() (*data.CatFact, error) {
 	req, err := http.NewRequest("GET", "https://catfact.ninja/fact", nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
     client := &http.Client{}
     resp, err := client.Do(req)
+    if err != nil {
+        return nil, err
+    }
     
     defer resp.Body.Close()
 
-    byteReponse, err := io.ReadAll(resp.Body)
-    if err != nil {
-        return err
-    }
-
-    // var cf *data.CatFact
-
-    /*
-    if err := json.NewDecoder(resp.Body).Decode(&cf); err != nil {
-        return err
-    }
-
-    fmt.Printf("%+v", cf)
-    */
-
     var input struct {
         Fact string `json:"fact"`
-        Length string `json:"length"`
+        Length int `json:"length"`
     }
 
-    res := &data.CatFact{
-        Fact: ,
-        Length: ,
-    }
-
-	//fmt.Printf("%T %s\n", cf)
-    err = app.Models.Facts.SendFactToDB(byteReponse)
+    err = json.NewDecoder(resp.Body).Decode(&input)
     if err != nil {
-        app.serverErrorResponse(nil, nil, err)
+        return nil, err
     }
 
-    /*
-    headers := make(http.Header)
-    headers.Set("Location", fmt.Sprintf("api/facts/%d", cf))
-
-    err = app.writeJSON(nil, http.StatusCreated, envelope{"fact": cf}, headers)
-    if err != nil {
-        return err
+    result := &data.CatFact{
+        Fact: input.Fact,
+        Length: input.Length,
     }
-    */
 
-    return nil
+
+    fmt.Println(result)
+    return result, nil
+    
 }
-
 
 
 
