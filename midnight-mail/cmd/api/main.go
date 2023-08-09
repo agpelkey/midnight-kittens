@@ -2,6 +2,12 @@ package main
 
 import (
 	"log"
+<<<<<<< HEAD
+=======
+	"net/smtp"
+	"os"
+
+>>>>>>> 04ae007 (clean up email api)
 
 	"github.com/rabbitmq/amqp091-go"
 )
@@ -55,3 +61,38 @@ func main() {
 
 	<-forever
 }
+<<<<<<< HEAD
+=======
+
+
+func SendMail(fact []byte) error {
+    username := os.Getenv("MAILTRAP_USRNAME") 
+
+    password := os.Getenv("MAILTRAP_PASSWD")
+
+    smtpHost := "sandbox.smtp.mailtrap.io"
+
+    auth := smtp.PlainAuth("", username, password, smtpHost)
+
+    // Message data 
+
+    from := username
+
+    to := []string{"agpelkey94@gmail.com"}
+
+    message := fact
+
+    smtpUrl := smtpHost + ":25"
+
+    err := smtp.SendMail(smtpUrl, auth, from, to, message)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    return nil
+}
+
+
+
+
+>>>>>>> 04ae007 (clean up email api)
