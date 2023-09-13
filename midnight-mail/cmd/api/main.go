@@ -2,20 +2,33 @@ package main
 
 import (
 	"log"
-	"net/smtp"
 	"os"
+	//"net/smtp"
+	//"os"
 
-
+	"github.com/joho/godotenv"
 	"github.com/rabbitmq/amqp091-go"
 )
+
+// function to populate .env variables
+func LoadEnv() {
+    err := godotenv.Load(".env")
+    if err != nil {
+        log.Fatalf("Error loading .env file")
+        os.Exit(1)
+    }
+}
 
 func failOnError(err error, msg string) {
 	if err != nil {
 		log.Panicf("%s: %s", msg, err)
+        os.Exit(1)
 	}
 }
 
 func main() {
+
+    LoadEnv()
 
 	conn, err := amqp091.Dial("amqp://guest:guest@localhost:5672/")
 	failOnError(err, "failed to connect to RabbitMQ")
@@ -46,20 +59,28 @@ func main() {
 	)
 	failOnError(err, "Failed to regist a consumer")
 
-	var forever chan struct{}
 
+	//var forever chan struct{}
+
+    for payload := range msgs {
+        log.Printf("Received fact: %s", payload.Body)
+    }
+
+    /*
 	go func() {
 		for d := range msgs {
 			log.Printf("Received a message: %s", d.Body)
 		}
 	}()
 
-	log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
+	//log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
+    */
 
-	<-forever
+	//<-forever
 }
 
 
+/*
 func SendMail(fact []byte) error {
     username := os.Getenv("MAILTRAP_USRNAME") 
 
@@ -86,7 +107,7 @@ func SendMail(fact []byte) error {
 
     return nil
 }
-
+*/
 
 
 

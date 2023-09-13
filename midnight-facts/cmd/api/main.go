@@ -41,13 +41,14 @@ func main() {
 
 	flag.StringVar(&cfg.db.dsn, "db-dsn", os.Getenv("CAT_FACT_DB_DSN"), "PostgreSQL DB DSN")
 
-	// Pass in values to optimize our database
+	// Pass in values to optimize our database - still undecided if this will be used
 	flag.IntVar(&cfg.db.maxOpenConns, "db-max-open-conns", 25, "PostgreSQL max open connections")
 	flag.IntVar(&cfg.db.maxIdleConns, "db-max-idle-conns", 25, "PostgreSQL max idle connections")
 	flag.StringVar(&cfg.db.maxIdleTime, "db-max-idle-time", "15m", "PostgreSQL max connections idle time")
 
 	flag.Parse()
 
+    /*
 	// connect to db here
 	conn, err := openDB(cfg)
 	if err != nil {
@@ -55,11 +56,12 @@ func main() {
 	}
 
 	defer conn.Close()
+    */
 
 	// declare application instance
 	app := &application{
 		config: cfg,
-		Models: data.NewModels(conn),
+		//Models: data.NewModels(conn),
 	}
 
 	//fmt.Println(app.handleGetCatFact())
