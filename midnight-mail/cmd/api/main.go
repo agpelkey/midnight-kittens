@@ -1,23 +1,20 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"strings"
+
 	//"net/smtp"
 	//"os"
 
-	"github.com/joho/godotenv"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/rabbitmq/amqp091-go"
 )
 
-// function to populate .env variables
-func LoadEnv() {
-    err := godotenv.Load(".env")
-    if err != nil {
-        log.Fatalf("Error loading .env file")
-        os.Exit(1)
-    }
-}
 
 func failOnError(err error, msg string) {
 	if err != nil {
@@ -28,7 +25,6 @@ func failOnError(err error, msg string) {
 
 func main() {
 
-    LoadEnv()
 
 	conn, err := amqp091.Dial("amqp://guest:guest@localhost:5672/")
 	failOnError(err, "failed to connect to RabbitMQ")
@@ -60,54 +56,51 @@ func main() {
 	failOnError(err, "Failed to regist a consumer")
 
 
-	//var forever chan struct{}
+	var forever chan struct{}
 
     for payload := range msgs {
         log.Printf("Received fact: %s", payload.Body)
+
+        reader := strings.NewReader(string(payload.Body))
+
+        var bucket = "midnight-cat-fact"
+        var accessKey = os.Getenv("AWS_ACCESS_KEY")
+        //var secretKey = os.Getenv("AWS_SECRET_KEY")
+        //var filename = os.File("~/.aws/config")
+
+        sess, err := session.NewSession(&aws.Config{
+            Region: aws.String("us-west-1"),
+        })
+
+        uploader := s3manager.NewUploader(sess)
+
+        _, err = uploader.Upload(&s3manager.UploadInput{
+            Bucket: aws.String(bucket),
+            Key: &accessKey,
+            Body: reader,
+        })
+        if err != nil {
+            log.Fatal("%v", err)
+        }
     }
+
+    fmt.Println("successfully uploaded to bucket")
 
     /*
-	go func() {
-		for d := range msgs {
-			log.Printf("Received a message: %s", d.Body)
-		}
-	}()
+    go func() {
+        for d := range msgs {
+            log.Printf("Received a message: %s", d.Body)
+        }
+    }()
 
-	//log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
+    //log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
     */
 
-	//<-forever
+    <-forever
+
 }
 
 
-/*
-func SendMail(fact []byte) error {
-    username := os.Getenv("MAILTRAP_USRNAME") 
-
-    password := os.Getenv("MAILTRAP_PASSWD")
-
-    smtpHost := "sandbox.smtp.mailtrap.io"
-
-    auth := smtp.PlainAuth("", username, password, smtpHost)
-
-    // Message data 
-
-    from := username
-
-    to := []string{"agpelkey94@gmail.com"}
-
-    message := fact
-
-    smtpUrl := smtpHost + ":25"
-
-    err := smtp.SendMail(smtpUrl, auth, from, to, message)
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    return nil
-}
-*/
 
 
 
